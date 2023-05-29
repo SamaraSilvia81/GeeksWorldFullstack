@@ -3,16 +3,18 @@ import React, { useState, useEffect } from 'react';
 import { View, StatusBar, StyleSheet, Keyboard, TouchableOpacity } from 'react-native';
 import { TextInput, Text, Provider as PaperProvider, DefaultTheme } from 'react-native-paper';
 
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+//import { login } from '../../redux/actions/authActions';
 
 import { useNavigation } from '@react-navigation/native';
-//import { createUser, getUsers } from '../../../server';
+import { createUser, getUsers } from '../../api/user';
 import { useMutation } from '@tanstack/react-query';
 
 const SignupScreen = () => {
 
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  const auth = useSelector((state) => state.auth);
 
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
