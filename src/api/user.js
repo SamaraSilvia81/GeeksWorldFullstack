@@ -1,32 +1,27 @@
 import axios from "axios";
 
-const instance = axios.create({
-  baseURL: "https://parseapi.back4app.com/classes",
+/*const instance = axios.create({
+  baseURL: process.env.DATABASE_URL, // URL do banco ElephantSQL
   headers: {
-    "X-Parse-Application-Id": "gzRhZWVb8EIzxhyvj9ixjrBjv5hYqcEpZ2HqOJYA",
-    "X-Parse-REST-API-Key": "CX4W388OoKPBOC60wvWAwWRLg5RFyr3HiPnaKLkF",
+    "X-Api-Key": process.env.API_KEY, // API Key do ElephantSQL
   },
+});*/
+
+const instance = axios.create({
+  baseURL: 'https://worldsgeekbackend-production.up.railway.app', // URL do serviço web do Railway
 });
 
 export const getUsers = () =>
   instance
-    .get("/UserGeek", {
-      params: {
-        keys: ["username", "password", "objectID"]
-      },
-    })
+    .get("/user")
     .then((res) => {
       console.log("MeusDados:", res.data);
-      return res.data.results;
-});
+      return res.data;
+    });
 
-export const createUser = ({username,email,password}) => {
-  console.log("Name:", username)
-  console.log("Email:", email)
-  console.log("Password:", password)
-  return instance.post("/UserGeek", {
+export const createUser = ({ username, email, password }) =>
+  instance.post("/user", {
     username,
     email,
-    password
-  });
-};
+    password,
+});
