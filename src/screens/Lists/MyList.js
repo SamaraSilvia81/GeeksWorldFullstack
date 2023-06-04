@@ -1,18 +1,14 @@
 import React from "react";
-
 import { ActivityIndicator, View, StatusBar, StyleSheet, FlatList } from "react-native";
 import { Text } from 'react-native-paper';
-
 import { useNavigation } from '@react-navigation/native';
 import { useQuery } from "@tanstack/react-query";
-
 import { CardCharacters } from "../../components/CardCharacters";
 import { getList } from "../../backend/api";
-
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-function MyList() {
 
+function MyList() {
   const { isLoading, error, data, isFetching } = useQuery({
     queryKey: ["WorldsGeeksBackend"],
     queryFn: getList,
@@ -41,6 +37,18 @@ function MyList() {
     );
   }
 
+  // Filtra os personagens de cada lista
+  const filteredCharacters = data.flatMap((item) =>
+    item.Characters.map((character) => ({
+      ...character,
+      Lists: item, // Armazena a lista completa no objeto de personagem
+    }))
+  );
+
+  const handleCardPress = (character) => {
+    navigation.navigate('MarvelHeroesChar', { characterId: character.id });
+  };
+
   return (
     <View style={styles.container}>
       {isFetching && <Text>IS FETCHING</Text>}
@@ -65,16 +73,16 @@ function MyList() {
       <View style={{ flex: 1 }}>
         <FlatList
           style={{ flex: 1 }}
-          data={data}
+          data={filteredCharacters}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
-            <CardCharacters character={item}/>
+            <CardCharacters character={item} onPress={handleCardPress} />
           )}
         />
       </View>
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
