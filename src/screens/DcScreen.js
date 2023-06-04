@@ -33,7 +33,7 @@ const DcScreen = ({ navigation }) => {
 
       <TouchableOpacity
         style={styles.cardContainer}
-        onPress={() => navigation.navigate('DcHeroes')}
+        onPress={() => navigation.navigate('DCHeroes')}
       >
         <Image
           source={require('../../public/MarvelHeroes.png')}
@@ -47,7 +47,7 @@ const DcScreen = ({ navigation }) => {
 
       <TouchableOpacity
         style={styles.cardContainer}
-        onPress={() => navigation.navigate('DcVill')}
+        onPress={() => navigation.navigate('DCVill')}
       >
         <Image
           source={require('../../public/MarvelVill.png')}

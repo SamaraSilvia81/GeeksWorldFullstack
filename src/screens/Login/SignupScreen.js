@@ -4,10 +4,9 @@ import { View, StatusBar, StyleSheet, Keyboard, TouchableOpacity } from 'react-n
 import { TextInput, Text, Provider as PaperProvider, DefaultTheme } from 'react-native-paper';
 
 import { useDispatch, useSelector } from 'react-redux';
-//import { login } from '../../redux/actions/authActions';
 
 import { useNavigation } from '@react-navigation/native';
-import { createUser, getUsers } from '../../api/user';
+import { createUser, getUsers } from '../../backend/api';
 import { useMutation } from '@tanstack/react-query';
 
 const SignupScreen = () => {
@@ -189,7 +188,7 @@ const styles = StyleSheet.create({
     zIndex: -1,
   },
   title: {
-    color: '#00000',
+    color: 'black',
     textAlign: 'center',
   },
   subtitle: {

@@ -5,15 +5,16 @@ import { Text } from "react-native-paper";
 
 import { useQuery } from "@tanstack/react-query";
 
-import CardCharacters from "../../components/CardCharacters";
-import { getHeroes } from "../../api/marvel";
+import CharactersScreen from "../../components/CharactersScreen";
+import { getCharacter } from "../../backend/api";
 
 function MarvelVillChar({ route }) {
-  const { heroId } = route.params;
+
+  const { characterId } = route.params;
 
   const { isLoading, error, data } = useQuery({
-    queryKey: ["WorldsGeeksApi"],
-    queryFn: getHeroes,
+    queryKey: ["WorldsGeekBackend"],
+    queryFn: getCharacter,
   });
 
   if (isLoading) {
@@ -33,9 +34,9 @@ function MarvelVillChar({ route }) {
     );
   }
 
-  const selectedHero = data.find((hero) => hero.objectId === heroId);
+  const selectedCharacter = data.find((character) => character.id === characterId);
 
-  if (!selectedHero) {
+  if (!selectedCharacter) {
     return (
       <View style={styles.errorContainer}>
         <Text>No hero found</Text>
@@ -45,7 +46,7 @@ function MarvelVillChar({ route }) {
 
   return (
     <View style={styles.container}>
-      <CardCharacters hero={selectedHero} />
+      <CharactersScreen character={selectedCharacter} />
     </View>
   );
 }

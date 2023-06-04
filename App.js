@@ -123,22 +123,22 @@ function App() {
               options={{ headerShown: false }}
             />
               <Stack.Screen
-              name="DcHeroes"
+              name="DCHeroes"
               component={DcHeroes}
               options={{ headerShown: false }}
             />
             <Stack.Screen
-              name="DcHeroesChar"
+              name="DCHeroesChar"
               component={DcHeroesChar}
               options={{ headerShown: false }}
             />
             <Stack.Screen
-              name="DcVill"
+              name="DCVill"
               component={DcVill}
               options={{ headerShown: false }}
             />
             <Stack.Screen
-              name="DcVillChar"
+              name="DCVillChar"
               component={DcVillChar}
               options={{ headerShown: false }}
             />

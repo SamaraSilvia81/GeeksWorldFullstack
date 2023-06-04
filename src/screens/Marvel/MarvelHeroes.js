@@ -1,31 +1,35 @@
-import React from "react";
-
+import React, { useState } from "react";
 import { ActivityIndicator, View, StatusBar, StyleSheet, FlatList } from "react-native";
 import { Text } from 'react-native-paper';
 
 import { useNavigation } from '@react-navigation/native';
 import { useQuery } from "@tanstack/react-query";
 
-import { CardHeroes } from "../../components/CardHeroes";
-import { getHeroes } from "../../api/marvel";
+import { CardCharacters } from "../../components/CardCharacters";
+import { getCharacter } from "../../backend/api";
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 function MarvelHeroes() {
+  const [characterType, setCharacterType] = useState("hero"); // Estado local para controlar o tipo de personagem (herói ou vilão)
 
   const { isLoading, error, data, isFetching } = useQuery({
-    queryKey: ["WorldsGeeksApi"],
-    queryFn: getHeroes,
+    queryKey: ["WorldsGeekBackend"],
+    queryFn: getCharacter,
   });
 
   const navigation = useNavigation();
 
-  const handleCardPress = (hero) => {
-    navigation.navigate('MarvelHeroesChar', { heroId: hero.objectId });
+  const handleCardPress = (character) => {
+    navigation.navigate('MarvelHeroesChar', { characterId: character.id });
   };
 
   const handleGoBack = () => {
     navigation.goBack();
+  };
+
+  const handleCharacterTypeChange = (type) => {
+    setCharacterType(type);
   };
 
   if (isLoading) {
@@ -44,6 +48,16 @@ function MarvelHeroes() {
       </View>
     );
   }
+
+  // Filtra os personagens com base no tipo selecionado
+  const filteredData = data.filter((character) => {
+    if (character.isMarvel && character.isHero && characterType === "hero") {
+      return true;
+    } else if (character.isMarvel && !character.isHero && characterType === "villain") {
+      return true;
+    }
+    return false;
+  });
 
   return (
     <View style={styles.container}>
@@ -69,16 +83,16 @@ function MarvelHeroes() {
       <View style={{ flex: 1 }}>
         <FlatList
           style={{ flex: 1 }}
-          data={data}
+          data={filteredData}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
-            <CardHeroes hero={item} onPress={handleCardPress} />
+            <CardCharacters character={item} onPress={handleCardPress} />
           )}
         />
       </View>
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -97,6 +111,17 @@ const styles = StyleSheet.create({
     top: 20,
     left: 25,
     zIndex: 1,
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    marginTop: 20,
+    marginBottom: 10,
+  },
+  buttonText: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "blue",
   },
 });
 

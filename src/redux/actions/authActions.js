@@ -1,4 +1,4 @@
-import { getUsers } from '../../api/user';
+import { getUsers } from '../../backend/api';
 
 export const login = (username, password) => {
   return async (dispatch) => {

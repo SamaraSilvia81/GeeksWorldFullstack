@@ -6,23 +6,19 @@ import { Text } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import { useQuery } from "@tanstack/react-query";
 
-import { CardHeroes } from "../../components/CardHeroes";
-import { getHeroes } from "../../api/marvel";
+import { CardCharacters } from "../../components/CardCharacters";
+import { getList } from "../../backend/api";
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 function MyList() {
 
   const { isLoading, error, data, isFetching } = useQuery({
-    queryKey: ["WorldsGeeksApi"],
-    queryFn: getHeroes,
+    queryKey: ["WorldsGeeksBackend"],
+    queryFn: getList,
   });
 
   const navigation = useNavigation();
-
-  const handleCardPress = (hero) => {
-    navigation.navigate('MarvelHeroesChar', { heroId: hero.objectId });
-  };
 
   const handleGoBack = () => {
     navigation.goBack();
@@ -72,7 +68,7 @@ function MyList() {
           data={data}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
-            <CardHeroes hero={item} onPress={handleCardPress} />
+            <CardCharacters character={item}/>
           )}
         />
       </View>

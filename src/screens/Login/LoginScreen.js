@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
     zIndex: -1,
   },
   title: {
-    color: '#00000',
+    color: 'black',
     textAlign: 'center',
   },
   subtitle: {
