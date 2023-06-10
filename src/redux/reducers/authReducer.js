@@ -4,6 +4,7 @@ const initialState = {
   loggedIn: false,
   signIn: false,
   username: null,
+  userId: null, // Adicione a propriedade userId ao estado inicial
   error: null,
 };
 
@@ -20,6 +21,7 @@ const authReducer = (state = initialState, action) => {
         ...state,
         loggedIn: true,
         username: action.payload.username,
+        userId: action.payload.userId, // Defina o userId no estado
         error: null,
       };
     case 'LOGIN_ERROR':

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { ActivityIndicator, View, StatusBar, StyleSheet, FlatList } from "react-native";
 import { Text } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
@@ -7,8 +7,14 @@ import { CardCharacters } from "../../components/CardCharacters";
 import { getList } from "../../backend/api";
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-
 function MyList() {
+
+  const [myList, setMyList] = useState([]); // Estado para armazenar a lista "mylist"
+
+  const addToMyList = (character) => {
+    setMyList((prevList) => [...prevList, character]); // Adiciona o personagem à lista
+  };
+
   const { isLoading, error, data, isFetching } = useQuery({
     queryKey: ["WorldsGeeksBackend"],
     queryFn: getList,
@@ -76,7 +82,7 @@ function MyList() {
           data={filteredCharacters}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
-            <CardCharacters character={item} onPress={handleCardPress} />
+            <CardCharacters character={item} onPress={handleCardPress} addToMyList={addToMyList}/>
           )}
         />
       </View>

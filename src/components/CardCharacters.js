@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
   },
   img: {
     width: "100%",
-    height: 200,
+    height: 220,
   },
   textContainer: {
     ...StyleSheet.absoluteFillObject, // Preencher completamente o contêiner pai

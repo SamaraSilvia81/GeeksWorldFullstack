@@ -45,3 +45,10 @@ export const createList = ({ listname }) =>
   instance.post("/list", {
     listname
 });
+
+export const addCharacterToList = (characterId, listId, userId) =>
+  instance.post(`/character/charlist`, {
+    characterId,
+    listId,
+    userId,
+  });
