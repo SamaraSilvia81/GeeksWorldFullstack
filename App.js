@@ -26,7 +26,7 @@ import Logout from './src/screens/Login/LogoutScreen';
 import Signup from './src/screens/Login/SignupScreen';
 
 // List
-import MyList from './src/screens/Lists/MyList';
+import CharList from './src/screens/Lists/CharListScreen';
 
 // Marvel
 import MarvelHeroes from './src/screens/Marvel/MarvelHeroes';
@@ -148,8 +148,8 @@ function App() {
               options={{ headerShown: false }}
             />
              <Stack.Screen
-              name="MyList"
-              component={MyList}
+              name="CharList"
+              component={CharList}
               options={{ headerShown: false }}
             />
             </Stack.Navigator>

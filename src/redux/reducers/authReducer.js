@@ -1,6 +1,7 @@
 // reducers/authReducer.js
 
 const initialState = {
+  isAuthenticated: false,
   loggedIn: false,
   signIn: false,
   username: null,
@@ -19,6 +20,7 @@ const authReducer = (state = initialState, action) => {
     case 'LOGIN_SUCCESS':
       return {
         ...state,
+        isAuthenticated: true,
         loggedIn: true,
         username: action.payload.username,
         userId: action.payload.userId, // Defina o userId no estado
@@ -27,6 +29,7 @@ const authReducer = (state = initialState, action) => {
     case 'LOGIN_ERROR':
       return {
         ...state,
+        isAuthenticated: false,
         loggedIn: false,
         username: null,
         error: action.payload,

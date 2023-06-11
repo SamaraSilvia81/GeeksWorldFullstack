@@ -1,28 +1,59 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
+import { StyleSheet, View, Modal, TouchableOpacity, FlatList } from 'react-native';
 
-import { StyleSheet, View } from 'react-native';
-import { Avatar, Button, Text } from 'react-native-paper';
-
+import { Button, Avatar, Text } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+
 import { useNavigation } from '@react-navigation/native';
 
-const CharactersScreen = ({ character }) => {
+import { useSelector } from 'react-redux';
+import { createList, addCharacterToList } from '../backend/api';
+
+const CharDetails = ({ character, lists }) => {
 
   const navigation = useNavigation();
-
-  const [isButtonPressed, setIsButtonPressed] = useState(false);
-
+  
   const handleGoBack = () => {
     navigation.goBack();
   };
 
+  const [isButtonPressed, setIsButtonPressed] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const userId = useSelector((state) => state.auth.userId);
+  const userLists = useSelector((state) => state.lists.lists);
+  const characterLists = userLists.filter((list) => list.characters.includes(character.id));
+
   const handleButtonPress = () => {
     setIsButtonPressed((prevState) => !prevState);
+    setIsModalVisible(true);
+  };
+
+  const handleModalClose = () => {
+    setIsModalVisible(false);
+  };
+
+  const renderList = ({ item }) => (
+    <TouchableOpacity onPress={() => handleAddToList(item.id)}>
+      <Text style={styles.listItem}>{item.name}</Text>
+    </TouchableOpacity>
+  );
+
+  const handleAddToList = async (listId) => {
+    try {
+      await addCharacterToList(character.id, listId, userId);
+      setIsModalVisible(false);
+    } catch (error) {
+      console.log('Error adding character to list:', error);
+      // Lógica para lidar com o erro ao adicionar o personagem à lista
+    }
   };
 
   return (
     <View style={styles.container}>
+
       <View style={styles.oval} />
+
       <View style={styles.arrowIconContainer}>
         <Icon
           name="arrow-back"
@@ -31,6 +62,7 @@ const CharactersScreen = ({ character }) => {
           onPress={handleGoBack}
         />
       </View>
+
       <View style={styles.card}>
         <View style={styles.content}>
           <View style={styles.avatarContainer}>
@@ -65,6 +97,30 @@ const CharactersScreen = ({ character }) => {
           </Button>
       </View>
       </View>
+
+      <Modal visible={isModalVisible} animationType="slide" transparent={true}>
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+          <Text style={styles.modalTitle}>Adicione o Personagem na...</Text>
+          <Text style={styles.modalTitle}>Adicione o Personagem na...</Text>
+            {characterLists.length > 0 ? (
+              <FlatList
+                data={lists}
+                keyExtractor={(item) => item.id}
+                renderItem={({ item }) => (
+                  <TouchableOpacity onPress={() => handleAddToList(item.id)}>
+                    <Text>{item.name}</Text>
+                  </TouchableOpacity>
+                )}
+              />
+            ) : (
+              <Text>Nenhuma lista encontrada.</Text>
+            )}
+            <Button onPress={handleModalClose}>Cancelar</Button>
+          </View>
+        </View>
+      </Modal>
+
     </View>
   );
 };
@@ -167,6 +223,18 @@ const styles = StyleSheet.create({
   buttonPressed: {
     backgroundColor: '#2A234B', // #2A234B 385993
   },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    backgroundColor: '#fff',
+    padding: 20,
+    borderRadius: 10,
+    width: '80%',
+  },
 });
 
-export default CharactersScreen;
+export default CharDetails;

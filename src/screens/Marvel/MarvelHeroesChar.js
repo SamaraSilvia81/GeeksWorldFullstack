@@ -5,7 +5,7 @@ import { Text } from "react-native-paper";
 
 import { useQuery } from "@tanstack/react-query";
 
-import CharactersScreen from "../../components/CharactersScreen";
+import CharDetails from "../../components/CharDetails";
 import { getCharacter } from "../../backend/api";
 
 function MarvelHeroesChar({ route }) {
@@ -46,7 +46,7 @@ function MarvelHeroesChar({ route }) {
 
   return (
     <View style={styles.container}>
-      <CharactersScreen character={selectedCharacter} />
+      <CharDetails character={selectedCharacter}/>
     </View>
   );
 }

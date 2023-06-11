@@ -28,10 +28,6 @@ function MarvelHeroes() {
     navigation.goBack();
   };
 
-  const handleCharacterTypeChange = (type) => {
-    setCharacterType(type);
-  };
-
   if (isLoading) {
     return (
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>

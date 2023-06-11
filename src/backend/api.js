@@ -41,14 +41,21 @@ export const getList = () =>
       return res.data;
 });
 
-export const createList = ({ listname }) =>
+export const createList = ({ listname, userId }) =>
   instance.post("/list", {
-    listname
+    listname,
+    userId
 });
+
+export const updateList = (listId, listname) =>
+  instance.put(`/list/${listId}`, { listname } );
+
+export const deleteList = (listId) =>
+  instance.delete(`/list/${listId}`);
 
 export const addCharacterToList = (characterId, listId, userId) =>
   instance.post(`/character/charlist`, {
     characterId,
     listId,
     userId,
-  });
+});
