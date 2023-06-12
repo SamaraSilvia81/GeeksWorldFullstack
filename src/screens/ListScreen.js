@@ -3,17 +3,22 @@ import { ActivityIndicator, View, StatusBar, StyleSheet, FlatList } from "react-
 import { Button, Dialog, IconButton, Text, TextInput,} from 'react-native-paper';
 
 import { useNavigation } from '@react-navigation/native';
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
-import { useSelector } from 'react-redux';
-
-import { getList, createList } from "../backend/api";
+import { useSelector, useDispatch } from 'react-redux';
 
 import { CardLists } from "../components/CardLists";
+
+import { getList, createList } from "../backend/api";
+import { showMessage, clearMessage } from '../redux/actions/listsActions';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 function ListScreen() {
+
+  const navigation = useNavigation();
+  const queryClient = useQueryClient();
+  const dispatch = useDispatch();
 
   const userId = useSelector(state => state.auth.userId);
   const message = useSelector(state => state.lists.message);
@@ -22,34 +27,6 @@ function ListScreen() {
   const [isCreatingList, setIsCreatingList] = useState(false);
   const [newListName, setNewListName] = useState('');
   const [filteredData, setFilteredData] = useState([]);
-
-  const navigation = useNavigation();
-
-  const handleCardPress = (list) => {
-    navigation.navigate('CharList', { listId: list.id });
-  };
-
-  // Função para abrir o modal
-  const handleCreateList = () => {
-    setIsCreatingList(true);
-  };
-
-  const handleAddList = async () => {
-    try {
-      //const newList = await createList(newListName, userId);
-      const newList = await createList({ listname: newListName, userId: userId });
-      console.log("NewList: ",newList);
-      setIsCreatingList(false); // Fechar o pop-up após a criação da lista
-      setNewListName(''); // Limpar o nome da nova lista
-      setFilteredData(prevData => [newList, ...prevData]) // Adicionar a nova lista ao estado filteredData
-    } catch (error) {
-      console.log('Error creating list:', error);
-    }
-  };
-
-  const handleGoBack = () => {
-    navigation.goBack();
-  };
 
   const { isLoading, error, data, isFetching } = useQuery({
     queryKey: ["WorldsGeekBackend"],
@@ -61,7 +38,41 @@ function ListScreen() {
       const filteredList = data.filter(list => list.UserId === userId);
       setFilteredData(filteredList || []);
     }
-  }, [data, userId, message, messageType]);  
+  }, [data, userId, message, messageType]);
+
+  const handleCardPress = (list) => {
+    navigation.navigate('CharList', { listId: list.id });
+  };
+
+  // Função para abrir o modal
+  const handleCreateList = () => {
+    setIsCreatingList(true);
+  };
+
+  const handleAddList = () => {
+    createList({ listname: newListName, userId })
+      .then((newList) => {
+        dispatch(showMessage('List created successfully!', 'success'));
+        setTimeout(() => {
+          dispatch(clearMessage());
+        }, 800);
+        console.log("NewList: ", newList);
+        setIsCreatingList(false);
+        setNewListName('');
+
+        // Solicitar uma nova busca dos dados atualizados
+        queryClient.invalidateQueries("WorldsGeekBackend");
+      })
+      .catch((error) => {
+        dispatch(showMessage('Failed to create list. Please try again.', 'error'));
+        console.log('Error creating list:', error);
+      });
+  };
+
+
+  const handleGoBack = () => {
+    navigation.goBack();
+  };
 
   if (isLoading) {
     return (
@@ -122,8 +133,7 @@ function ListScreen() {
         <FlatList
           style={{ flex: 1 }}
           data={filteredData}
-          keyExtractor={(item) => item.id}
-          //keyExtractor={(item) => item?.id?.toString()} // Usar item.id.toString() como chave e optional chaining (?.) para evitar o erro
+          keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
             <CardLists list={item} onPress={handleCardPress} />
           )}

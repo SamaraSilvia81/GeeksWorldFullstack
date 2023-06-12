@@ -2,25 +2,25 @@ import React, {useState} from "react";
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { ActivityIndicator, View, StatusBar, StyleSheet, FlatList } from "react-native";
-import { Text } from 'react-native-paper';
+import { IconButton, Text } from 'react-native-paper';
 
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { useQuery } from "@tanstack/react-query";
 
 import { CardCharacters } from "../../components/CardCharacters";
+import { CharListModal } from "../../components/CharListModal";
+
 import { getList } from "../../backend/api";
 
 import { useSelector } from 'react-redux';
 
 function CharListScreen () {
 
-  const [myList, setMyList] = useState([]); // Estado para armazenar a lista "mylist"
+  const [myList, setList] = useState([]); // Estado para armazenar a lista "mylist"
   const user = useSelector(state => state.auth.userId);
-  const [selectedList, setSelectedList] = useState(null); // Estado para armazenar a lista selecionada
-
-  const addToMyList = (character) => {
-    setMyList((prevList) => [...prevList, character]); // Adiciona o personagem à lista
-  };
+  
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedCharacter, setSelectedCharacter] = useState(null);
 
   const { isLoading, error, data, isFetching } = useQuery({
     queryKey: ["WorldsGeeksBackend"],
@@ -31,6 +31,19 @@ function CharListScreen () {
 
   const handleGoBack = () => {
     navigation.goBack();
+  };
+  
+  const handleAddCharacter = () => {
+    setModalVisible(true);
+  };
+
+  const handleSelectCharacter = (character) => {
+    setSelectedCharacter(character);
+    setModalVisible(false);
+    // Chame a função addCharacterToList com os parâmetros necessários (character.id, listId, user.id)
+    addCharacterToList({ characterId: character.id, listId: listId, userId: user.id });
+    // Atualize a lista myList com o novo personagem
+    setList((prevList) => [...prevList, character]);
   };
 
   if (isLoading) {
@@ -91,10 +104,34 @@ function CharListScreen () {
         <Icon
           name="arrow-back"
           size={25}
-          color="#FFFFFF"
+          color="#fff"
           onPress={handleGoBack}
         />
       </View>
+
+      <View style={styles.buttonContainer}>
+        <IconButton
+          icon="plus"
+          iconColor="#fff"
+          size={30}
+          style={styles.addButton}
+          onPress={handleAddCharacter}
+        />
+      </View>
+
+      <FlatList
+          style={{ flex: 1 }}
+          data={filteredCharacters}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <CharListModal
+              visible={modalVisible}
+              characters={filteredCharacters} // Passa o array de personagens filtrados como propriedade
+              onSelect={handleSelectCharacter}
+              onAdd={handleAddCharacter}
+            />
+          )}
+        />
 
       <View style={{ flex: 1 }}>
         <FlatList
@@ -102,7 +139,7 @@ function CharListScreen () {
           data={filteredCharacters}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
-            <CardCharacters character={item} onPress={handleCardPress} addToMyList={addToMyList}/>
+            <CardCharacters character={item} onPress={handleCardPress}/>
           )}
         />
       </View>
@@ -122,11 +159,24 @@ const styles = StyleSheet.create({
     position: 'absolute',
     borderWidth: 1,
     borderColor: '#fff',
+    marginVertical: 10,
     borderRadius: 100,
     padding: 5,
     top: 20,
     left: 25,
     zIndex: 1,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    marginVertical: 20,
+    marginBottom: 10,
+    width: '100%',
+    paddingHorizontal: 16,
+  },
+  addButton: {
+    backgroundColor: '#0B2D66',
   },
 });
 

@@ -1,17 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import { Text, TextInput, IconButton } from 'react-native-paper';
 
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import { updateList, deleteList } from '../backend/api';
-import { showMessage, clearMessage } from '../redux/actions/listsActions';
+import { setLists, showMessage, clearMessage } from '../redux/actions/listsActions';
 
 export const CardLists = ({ list, onPress  }) => {
 
   const dispatch = useDispatch();
 
   const [editMode, setEditMode] = useState(false);
+
+  const lists = useSelector((state) => state.lists.lists);
+
   const [listname, setListname] = useState(list.listname);
   const [filteredData, setFilteredData] = useState([list]); // Inicialize o estado com os dados iniciais da lista
 
@@ -41,18 +44,18 @@ export const CardLists = ({ list, onPress  }) => {
   };
 
   const handleDeletePress = () => {
-
     console.log('Deleting list with ID:', list.id);
-  
+
     deleteList(list.id)
       .then(() => {
         dispatch(showMessage('List deleted successfully!', 'success'));
         setTimeout(() => {
           dispatch(clearMessage());
         }, 800);
-  
-        // Remova a lista excluída do estado filteredData
-        setFilteredData(prevData => prevData.filter(item => item.id !== list.id));
+
+        // Atualize o estado `lists` no Redux para refletir a exclusão da lista
+        const updatedLists = lists.filter((item) => item.id !== list.id);
+        dispatch(setLists(updatedLists));
       })
       .catch((error) => {
         console.log('Error deleting list:', error);
@@ -61,7 +64,7 @@ export const CardLists = ({ list, onPress  }) => {
           dispatch(clearMessage());
         }, 800);
       });
-  };  
+  };
 
   console.log('list', list);
   console.log('listname', listname);
