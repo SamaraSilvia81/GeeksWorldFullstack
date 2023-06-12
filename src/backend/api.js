@@ -41,21 +41,40 @@ export const getList = () =>
       return res.data;
 });
 
-export const createList = ({ listname, userId }) =>
+// export const createList = (listname, userId) =>
+//   instance.post("/list", {
+//     listname,
+//     userId
+// });
+
+export const createList = ({listname, userId}) =>
   instance.post("/list", {
-    listname,
-    userId
-});
+    listname ,
+    userId,
+  }).then((res) => res.data);
+
+// export const createList = async (data) => {
+//   const response = await instance.post("/list", data);
+//   const newList = response.data;
+//   newList.id = newList._id; // Assuming the unique identifier is stored in the _id field
+//   return newList;
+// };
+
+// export const updateList = (listId, listname) =>
+//   instance.put(`/list/${listId}`, { listname } );
 
 export const updateList = (listId, listname) =>
-  instance.put(`/list/${listId}`, { listname } );
+  instance.put(`/list/${listId}`, { listname }).then((res) => res.data);
+
+// export const deleteList = (listId) =>
+//   instance.delete(`/list/${listId}`);
 
 export const deleteList = (listId) =>
-  instance.delete(`/list/${listId}`);
+  instance.delete(`/list/${listId}`).then((res) => res.data);
 
 export const addCharacterToList = (characterId, listId, userId) =>
   instance.post(`/character/charlist`, {
     characterId,
     listId,
     userId,
-});
+}).then((res) => res.data);

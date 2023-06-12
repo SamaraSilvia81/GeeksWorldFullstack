@@ -16,13 +16,11 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 function ListScreen() {
 
   const userId = useSelector(state => state.auth.userId);
-
   const message = useSelector(state => state.lists.message);
   const messageType = useSelector(state => state.lists.messageType);
 
   const [isCreatingList, setIsCreatingList] = useState(false);
   const [newListName, setNewListName] = useState('');
-
   const [filteredData, setFilteredData] = useState([]);
 
   const navigation = useNavigation();
@@ -31,16 +29,19 @@ function ListScreen() {
     navigation.navigate('CharList', { listId: list.id });
   };
 
+  // Função para abrir o modal
   const handleCreateList = () => {
     setIsCreatingList(true);
   };
 
   const handleAddList = async () => {
     try {
-      const newList = await createList({ listname: newListName, userId: userId});
+      //const newList = await createList(newListName, userId);
+      const newList = await createList({ listname: newListName, userId: userId });
+      console.log("NewList: ",newList);
       setIsCreatingList(false); // Fechar o pop-up após a criação da lista
       setNewListName(''); // Limpar o nome da nova lista
-      setFilteredData(prevData => [...prevData, newList]); // Adicionar a nova lista ao estado filteredData
+      setFilteredData(prevData => [newList, ...prevData]) // Adicionar a nova lista ao estado filteredData
     } catch (error) {
       console.log('Error creating list:', error);
     }
@@ -58,7 +59,7 @@ function ListScreen() {
   useEffect(() => {
     if (data) {
       const filteredList = data.filter(list => list.UserId === userId);
-      setFilteredData(filteredList);
+      setFilteredData(filteredList || []);
     }
   }, [data, userId, message, messageType]);  
 
@@ -122,6 +123,7 @@ function ListScreen() {
           style={{ flex: 1 }}
           data={filteredData}
           keyExtractor={(item) => item.id}
+          //keyExtractor={(item) => item?.id?.toString()} // Usar item.id.toString() como chave e optional chaining (?.) para evitar o erro
           renderItem={({ item }) => (
             <CardLists list={item} onPress={handleCardPress} />
           )}

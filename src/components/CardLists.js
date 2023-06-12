@@ -9,16 +9,15 @@ import { showMessage, clearMessage } from '../redux/actions/listsActions';
 
 export const CardLists = ({ list, onPress  }) => {
 
-  console.log('list', list);
-  console.log('listname', listname);
-
   const dispatch = useDispatch();
 
   const [editMode, setEditMode] = useState(false);
   const [listname, setListname] = useState(list.listname);
+  const [filteredData, setFilteredData] = useState([list]); // Inicialize o estado com os dados iniciais da lista
 
   const handleEditPress = () => {
     setEditMode(true);
+    setListname(list.listname);
   };
 
   const handleSaveEdit = () => {
@@ -37,7 +36,7 @@ export const CardLists = ({ list, onPress  }) => {
   };
 
   const handleCancelEdit = () => {
-    setListname(list.listname);
+    setListname(list.listname || '');
     setEditMode(false);
   };
 
@@ -64,6 +63,9 @@ export const CardLists = ({ list, onPress  }) => {
       });
   };  
 
+  console.log('list', list);
+  console.log('listname', listname);
+  
   return (
     <TouchableOpacity onPress={() => onPress(list)}>
       <View style={styles.item}>
