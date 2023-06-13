@@ -69,11 +69,6 @@ function ListScreen() {
       });
   };
 
-
-  const handleGoBack = () => {
-    navigation.goBack();
-  };
-
   if (isLoading) {
     return (
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
@@ -104,13 +99,8 @@ function ListScreen() {
         networkActivityIndicatorVisible={true}
       />
 
-      <View style={styles.arrowIconContainer}>
-        <Icon
-          name="arrow-back"
-          size={25}
-          color="#FFFFFF"
-          onPress={handleGoBack}
-        />
+      <View style={styles.titleContainer}>
+        <Text style={styles.titlePage} variant="headlineMedium">Lists</Text>
       </View>
 
       <View style={styles.buttonContainer}>
@@ -167,16 +157,16 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: '#16161d',
   },
-  arrowIconContainer: {
+  titleContainer: {
     position: 'absolute',
-    borderWidth: 1,
-    borderColor: '#fff',
     marginTop: 10,
-    borderRadius: 100,
     padding: 5,
     top: 20,
     left: 25,
     zIndex: 1,
+  },
+  titlePage: {
+    color: '#fff'
   },
   buttonContainer: {
     flexDirection: 'row',

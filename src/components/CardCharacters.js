@@ -59,6 +59,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     backgroundColor: '#CF2422',
     bottom: 10,
-    right: 10,
+    right: 15,
   },
 });

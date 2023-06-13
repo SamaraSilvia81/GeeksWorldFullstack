@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, StatusBar, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { Text} from 'react-native-paper';
 
 const HomeScreen = ({ navigation }) => {
 
@@ -12,6 +13,8 @@ const HomeScreen = ({ navigation }) => {
         translucent={false}
         networkActivityIndicatorVisible={true}
       />
+
+      <Text style={styles.titlePage} variant="headlineMedium">World's Geek</Text>
       
       <TouchableOpacity onPress={() => navigation.navigate('Marvel')}>
         <Image
@@ -37,6 +40,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#16161d',
     padding: 16,
+  },
+  titlePage: {
+    color: '#fff',
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 10,
   },
   image: {
     width: 280,

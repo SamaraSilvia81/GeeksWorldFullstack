@@ -226,7 +226,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     position: 'absolute',
-    bottom: 15,
+    bottom: 20,
   },
   textFooter: {
     color: '#00000',

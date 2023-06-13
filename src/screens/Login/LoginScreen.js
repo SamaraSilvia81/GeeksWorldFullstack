@@ -87,7 +87,7 @@ const LoginScreen = () => {
 
         <View style={styles.header}>
           <Text variant="displaySmall" style={styles.title}>
-            Welcome
+            World's Geek
           </Text>
           <Text variant="titleSmall" style={styles.subtitle}>
             Have fun without limits
@@ -199,7 +199,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     position: 'absolute',
-    bottom: 15,
+    bottom: 20,
   },
   textFooter: {
     color: '#000000',

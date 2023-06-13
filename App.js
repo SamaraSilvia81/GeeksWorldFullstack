@@ -54,7 +54,7 @@ function App() {
               initialRouteName="Hero"
               screenOptions={{
                 headerStyle: {
-                  backgroundColor: '#ffffff',
+                  backgroundColor: '#23232e',
                 },
                 cardStyleInterpolator:
                   CardStyleInterpolators.forHorizontalIOS,
