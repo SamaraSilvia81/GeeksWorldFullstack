@@ -84,11 +84,9 @@ const SignupScreen = () => {
     ...DefaultTheme,
     colors: {
       ...DefaultTheme.colors,
-      primary: '#EF7377',
+      primary: '#4080ea',
     },
   };
-
-  const ovalHeight = keyboardVisible ? 100 : 220;
 
   return (
     <PaperProvider theme={theme}>
@@ -102,14 +100,12 @@ const SignupScreen = () => {
           networkActivityIndicatorVisible={true}
         />
 
-        <View style={[styles.oval, { height: ovalHeight }]} />
-
         <View style={styles.header}>
           <Text variant="displaySmall" style={styles.title}>
-            Sign Up
+            World's Geek
           </Text>
           <Text variant="titleSmall" style={styles.subtitle}>
-            Have fun without limits
+            made for marvel & DC fans
           </Text>
         </View>
 
@@ -141,7 +137,7 @@ const SignupScreen = () => {
             onPress={handleSignup} 
             style={styles.buttonSignUp}
           >
-            <Text style={styles.buttonSignUpText}>Create User</Text>
+            <Text style={styles.buttonSignUpText}>Sign Up</Text>
           </TouchableOpacity>
         </View>
 
@@ -150,7 +146,7 @@ const SignupScreen = () => {
 
         {!keyboardVisible && (
           <View style={styles.footer}>
-            <Text style={styles.textFooter}>Don't have an account?</Text>
+            <Text style={styles.textFooter}>Already have an account?</Text>
             <TouchableOpacity
               onPress={handleLogIn}
               style={styles.buttonLogin}
@@ -171,28 +167,20 @@ const styles = StyleSheet.create({
     margin: 5,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: '#23232e',
     padding: 16,
   },
   header: {
     alignItems: 'center',
-    marginTop: 90,
-  },
-  oval: {
-    position: 'absolute',
-    top: 0,
-    width: '120%',
-    backgroundColor: '#23232a',
-    borderBottomLeftRadius: 200,
-    borderBottomRightRadius: 200,
-    zIndex: -1,
+    marginTop: 30,
+    marginButton: 10,
   },
   title: {
-    color: 'black',
+    color: '#fff',
     textAlign: 'center',
   },
   subtitle: {
-    color: '#23232a',
+    color: '#fff',
     textAlign: 'center',
   },
   formLogin: {
@@ -216,7 +204,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 5,
     borderRadius: 50,
-    backgroundColor: "#CF2422" // #EF7377
+    backgroundColor: "#0B2D66" // #EF7377
   },
   buttonSignUpText: {
     fontSize: 16,
@@ -226,10 +214,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     position: 'absolute',
-    bottom: 20,
+    bottom: 40,
   },
   textFooter: {
-    color: '#00000',
+    color: '#fff',
   },
   errorMessage: {
     color: '#EF7377',
@@ -243,7 +231,7 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
   buttonLoginText: {
-    color: '#0B2D66', // #2A234B 385993
+    color: '#4080ea', // #2A234B 385993
   },
 });
 

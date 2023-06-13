@@ -57,8 +57,6 @@ const LoginScreen = () => {
     },
   };
 
-  const ovalHeight = keyboardVisible ? 120 : 220;
-
   useEffect(() => {
     if (auth.error) {
       setErrorMessage(auth.error);
@@ -83,14 +81,12 @@ const LoginScreen = () => {
           networkActivityIndicatorVisible={true}
         />
 
-        <View style={[styles.oval, { height: ovalHeight }]} />
-
         <View style={styles.header}>
           <Text variant="displaySmall" style={styles.title}>
             World's Geek
           </Text>
           <Text variant="titleSmall" style={styles.subtitle}>
-            Have fun without limits
+            made for marvel & DC fans
           </Text>
         </View>
 
@@ -144,28 +140,20 @@ const styles = StyleSheet.create({
     margin: 5,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: '#23232a',
     padding: 16,
   },
   header: {
     alignItems: 'center',
-    marginTop: 90,
-  },
-  oval: {
-    position: 'absolute',
-    top: 0,
-    width: '120%',
-    backgroundColor: '#23232a',
-    borderBottomLeftRadius: 200,
-    borderBottomRightRadius: 200,
-    zIndex: -1,
+    marginTop: 30,
+    marginButton: 10,
   },
   title: {
-    color: 'black',
+    color: '#fff',
     textAlign: 'center',
   },
   subtitle: {
-    color: '#23232a',
+    color: '#fff',
     textAlign: 'center',
   },
   formLogin: {
@@ -199,20 +187,20 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     position: 'absolute',
-    bottom: 20,
+    bottom: 40,
   },
   textFooter: {
-    color: '#000000',
+    color: '#fff',
   },
   errorText: {
     color: '#EF7377',
     marginTop: 10,
   },
   buttonSignup: {
-    marginLeft: 5,
+    marginLeft: 5
   },
   buttonSignupText: {
-    color: '#0B2D66', // #2A234B 385993
+    color: '#CF2422', // #2A234B 385993
   },
 });
 
