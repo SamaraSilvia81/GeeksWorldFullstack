@@ -1,8 +1,8 @@
 import React from 'react';
 import { StyleSheet, View, Image, TouchableOpacity} from 'react-native';
-import { Text } from 'react-native-paper';
+import { IconButton , Text } from 'react-native-paper';
 
-export const CardCharacters = ({ character, onPress }) => {
+export const CardCharacters = ({ character, onPress, onDelete, showDeleteButton  }) => {
 
   console.log("character", character);
 
@@ -14,6 +14,15 @@ export const CardCharacters = ({ character, onPress }) => {
           <View style={styles.textContainer}>
             <Text variant="titleLarge" style={styles.titleItem}>{character.charname}</Text>
           </View>
+          {showDeleteButton && (
+            <IconButton
+              icon="close"
+              iconColor="#fff"
+              size={20}
+              style={styles.deleteButton}
+              onPress={() => onDelete(character.id)}
+            />
+          )}
         </View>
       </View>
     </TouchableOpacity>
@@ -45,5 +54,11 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject, // Preencher completamente o contêiner pai
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  deleteButton: {
+    position: 'absolute',
+    backgroundColor: '#CF2422',
+    bottom: 10,
+    right: 10,
   },
 });

@@ -8,9 +8,9 @@ import { useRoute, useNavigation } from '@react-navigation/native';
 import { useQuery } from "@tanstack/react-query";
 
 import { CardCharacters } from "../../components/CardCharacters";
-import { CharListModal } from "../../components/CharListModal";
+import { CharModal } from "../../components/CharModal";
 
-import { getList } from "../../backend/api";
+import { getList, addCharacterToList, deleteCharacterToList } from "../../backend/api";
 
 import { useSelector } from 'react-redux';
 
@@ -20,7 +20,7 @@ function CharListScreen () {
   const user = useSelector(state => state.auth.userId);
   
   const [modalVisible, setModalVisible] = useState(false);
-  const [selectedCharacter, setSelectedCharacter] = useState(null);
+  const [selectedCharacters, setSelectedCharacters] = useState([]);
 
   const { isLoading, error, data, isFetching } = useQuery({
     queryKey: ["WorldsGeeksBackend"],
@@ -38,12 +38,25 @@ function CharListScreen () {
   };
 
   const handleSelectCharacter = (character) => {
-    setSelectedCharacter(character);
     setModalVisible(false);
     // Chame a função addCharacterToList com os parâmetros necessários (character.id, listId, user.id)
     addCharacterToList({ characterId: character.id, listId: listId, userId: user.id });
     // Atualize a lista myList com o novo personagem
     setList((prevList) => [...prevList, character]);
+    setSelectedCharacters((prevCharacters) => [...prevCharacters, character]);
+  };
+
+  const handleDeleteCharacter = async (characterId) => {
+    try {
+      await deleteCharacterToList(characterId, listId); // Adicione o parâmetro listId aqui
+      // setList((prevList) => prevList.filter((character) => character.id !== characterId));
+      // setSelectedCharacters((prevCharacters) =>
+      //   prevCharacters.filter((character) => character.id !== characterId)
+      // );
+      console.log("Character Deleted:", characterId);
+    } catch (error) {
+      console.log("Error deleting character:", error);
+    }
   };
 
   if (isLoading) {
@@ -89,61 +102,62 @@ function CharListScreen () {
   };  
 
   return (
-    <View style={styles.container}>
-      {isFetching && <Text>IS FETCHING</Text>}
+      <View style={styles.container}>
+        {isFetching && <Text>IS FETCHING</Text>}
 
-      <StatusBar
-        barStyle="dark-content"
-        hidden={false}
-        backgroundColor="transparent"
-        translucent={false}
-        networkActivityIndicatorVisible={true}
-      />
-
-      <View style={styles.arrowIconContainer}>
-        <Icon
-          name="arrow-back"
-          size={25}
-          color="#fff"
-          onPress={handleGoBack}
+        <StatusBar
+          barStyle="dark-content"
+          hidden={false}
+          backgroundColor="transparent"
+          translucent={false}
+          networkActivityIndicatorVisible={true}
         />
+
+        <View style={styles.arrowIconContainer}>
+          <Icon
+            name="arrow-back"
+            size={25}
+            color="#fff"
+            onPress={handleGoBack}
+          />
+        </View>
+
+        <View style={styles.buttonContainer}>
+          <IconButton
+            icon="plus"
+            iconColor="#fff"
+            size={30}
+            style={styles.addButton}
+            onPress={handleAddCharacter}
+          />
+        </View>
+
+        {modalVisible && (
+          <CharModal
+            visible={modalVisible}
+            myList={myList} // Passa a propriedade myList corretamente
+            onAdd={handleSelectCharacter}
+            setModalVisible={setModalVisible}
+          />
+        )}
+
+        <View style={{ flex: 1 }}>
+          <FlatList
+            style={{ flex: 1 }}
+            data={filteredCharacters}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => (
+              <CardCharacters 
+                character={item} 
+                onPress={handleCardPress} 
+                onDelete={handleDeleteCharacter} 
+                showDeleteButton={true}
+              />
+            )}
+          />
+        </View>
+
       </View>
-
-      <View style={styles.buttonContainer}>
-        <IconButton
-          icon="plus"
-          iconColor="#fff"
-          size={30}
-          style={styles.addButton}
-          onPress={handleAddCharacter}
-        />
-      </View>
-
-      <FlatList
-          style={{ flex: 1 }}
-          data={filteredCharacters}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => (
-            <CharListModal
-              visible={modalVisible}
-              characters={filteredCharacters} // Passa o array de personagens filtrados como propriedade
-              onSelect={handleSelectCharacter}
-              onAdd={handleAddCharacter}
-            />
-          )}
-        />
-
-      <View style={{ flex: 1 }}>
-        <FlatList
-          style={{ flex: 1 }}
-          data={filteredCharacters}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => (
-            <CardCharacters character={item} onPress={handleCardPress}/>
-          )}
-        />
-      </View>
-    </View>
   );
 }
 
@@ -171,7 +185,6 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     alignItems: 'center',
     marginVertical: 20,
-    marginBottom: 10,
     width: '100%',
     paddingHorizontal: 16,
   },

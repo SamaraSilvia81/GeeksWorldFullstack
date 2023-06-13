@@ -47,17 +47,14 @@ export const createList = ({listname, userId}) =>
     userId,
   }).then((res) => res.data);
 
-// export const updateList = (listId, listname) =>
-//   instance.put(`/list/${listId}`, { listname } );
-
 export const updateList = (listId, listname) =>
-  instance.put(`/list/${listId}`, { listname }).then((res) => res.data);
-
-// export const deleteList = (listId) =>
-//   instance.delete(`/list/${listId}`);
+  instance.put(`/list/${listId}`, 
+  { listname }).then((res) => res.data);
 
 export const deleteList = (listId) =>
   instance.delete(`/list/${listId}`);
+
+// List and Character
 
 export const addCharacterToList = ({characterId, listId, userId}) =>
   instance.post(`/character/charlist`, {
@@ -65,3 +62,6 @@ export const addCharacterToList = ({characterId, listId, userId}) =>
     listId,
     userId,
 }).then((res) => res.data);
+
+export const deleteCharacterToList = (characterId, listId) =>
+  instance.delete(`/character/charlist/${characterId}/${listId}`);
