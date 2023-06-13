@@ -55,7 +55,7 @@ const DcScreen = ({ navigation }) => {
           resizeMode="cover"
         />
         <View style={styles.textContainer}>
-          <Text variant="titleLarge" style={styles.title}>Villians</Text>
+          <Text variant="titleLarge" style={styles.title}>Villains</Text>
         </View>
       </TouchableOpacity>
 
