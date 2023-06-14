@@ -14,7 +14,7 @@ const HomeScreen = ({ navigation }) => {
         networkActivityIndicatorVisible={true}
       />
 
-      <Text style={styles.titlePage} variant="headlineMedium">World's Geek</Text>
+      <Text style={styles.titlePage} variant="headlineMedium">Geek's World</Text>
       
       <TouchableOpacity onPress={() => navigation.navigate('Marvel')}>
         <Image

@@ -12,8 +12,6 @@ import { CardLists } from "../components/CardLists";
 import { getList, createList } from "../backend/api";
 import { showMessage, clearMessage } from '../redux/actions/listsActions';
 
-import Icon from 'react-native-vector-icons/MaterialIcons';
-
 function ListScreen() {
 
   const navigation = useNavigation();

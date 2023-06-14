@@ -17,38 +17,6 @@ const CharDetails = ({ character, lists }) => {
     navigation.goBack();
   };
 
-  const [isButtonPressed, setIsButtonPressed] = useState(false);
-  const [isModalVisible, setIsModalVisible] = useState(false);
-
-  const userId = useSelector((state) => state.auth.userId);
-  const userLists = useSelector((state) => state.lists.lists);
-  const characterLists = userLists.filter((list) => list.characters.includes(character.id));
-
-  const handleButtonPress = () => {
-    setIsButtonPressed((prevState) => !prevState);
-    setIsModalVisible(true);
-  };
-
-  const handleModalClose = () => {
-    setIsModalVisible(false);
-  };
-
-  const renderList = ({ item }) => (
-    <TouchableOpacity onPress={() => handleAddToList(item.id)}>
-      <Text style={styles.listItem}>{item.name}</Text>
-    </TouchableOpacity>
-  );
-
-  const handleAddToList = async (listId) => {
-    try {
-      await addCharacterToList(character.id, listId, userId);
-      setIsModalVisible(false);
-    } catch (error) {
-      console.log('Error adding character to list:', error);
-      // Lógica para lidar com o erro ao adicionar o personagem à lista
-    }
-  };
-
   return (
     <View style={styles.container}>
 
@@ -83,7 +51,7 @@ const CharDetails = ({ character, lists }) => {
               <Text style={styles.tagText}>{character.isMarvel ? 'Marvel' : 'DC'}</Text>
             </View>
             <View style={styles.tagItem}>
-              <Text style={styles.tagText}>{character.isHero ? 'Hero' : 'Villian'}</Text>
+              <Text style={styles.tagText}>{character.isHero ? 'Hero' : 'Villains'}</Text>
             </View>
         </View>
         </View>
@@ -97,29 +65,6 @@ const CharDetails = ({ character, lists }) => {
           </Button>
       </View>
       </View>
-
-      <Modal visible={isModalVisible} animationType="slide" transparent={true}>
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-          <Text style={styles.modalTitle}>Adicione o Personagem na...</Text>
-          <Text style={styles.modalTitle}>Adicione o Personagem na...</Text>
-            {characterLists.length > 0 ? (
-              <FlatList
-                data={lists}
-                keyExtractor={(item) => item.id}
-                renderItem={({ item }) => (
-                  <TouchableOpacity onPress={() => handleAddToList(item.id)}>
-                    <Text>{item.name}</Text>
-                  </TouchableOpacity>
-                )}
-              />
-            ) : (
-              <Text>Nenhuma lista encontrada.</Text>
-            )}
-            <Button onPress={handleModalClose}>Cancelar</Button>
-          </View>
-        </View>
-      </Modal>
 
     </View>
   );

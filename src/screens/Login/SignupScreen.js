@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { View, StatusBar, StyleSheet, Keyboard, TouchableOpacity } from 'react-native';
 import { TextInput, Text, Provider as PaperProvider, DefaultTheme } from 'react-native-paper';
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import { useNavigation } from '@react-navigation/native';
 import { createUser, getUsers } from '../../backend/api';
@@ -13,16 +13,21 @@ const SignupScreen = () => {
 
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const auth = useSelector((state) => state.auth);
 
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  const [showPassword, setShowPassword] = useState(false);
+
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
   const [keyboardVisible, setKeyboardVisible] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   const createUserMutation = useMutation(createUser, {
     onSuccess: (data) => {
@@ -43,16 +48,15 @@ const SignupScreen = () => {
       const users = await getUsers();
       const existingUser = users.find(
         (user) =>
-          user.username === username &&
-          user.email === email &&
-          user.password === password
+          user.username === username ||
+          user.email === email 
       );
       if (existingUser) {
-        // Usuário já cadastrado, redirecionar para a página inicial
-        navigation.navigate('Home');
+        setErrorMessage('User already exists');
         return;
       }
       await createUserMutation.mutateAsync({ username, email, password })
+      navigation.navigate('Home'); // Usuário cadastrado, redirecionar para a página inicial
     } catch (error) {
       console.error(error);
     }
@@ -102,7 +106,7 @@ const SignupScreen = () => {
 
         <View style={styles.header}>
           <Text variant="displaySmall" style={styles.title}>
-            World's Geek
+            Geek's World
           </Text>
           <Text variant="titleSmall" style={styles.subtitle}>
             made for marvel & DC fans
@@ -112,6 +116,9 @@ const SignupScreen = () => {
         <View style={styles.formLogin}>
           <TextInput
             style={styles.input}
+            selectionColor="#fff"
+            textColor="#fff"
+            underlineColor="#fff"
             type="flat"
             label="Username"
             value={username}
@@ -119,6 +126,9 @@ const SignupScreen = () => {
           />
           <TextInput
             style={styles.input}
+            selectionColor="#fff"
+            textColor="#fff"
+            underlineColor="#fff"
             type="flat"
             label="Email"
             value={email}
@@ -126,6 +136,9 @@ const SignupScreen = () => {
           />
           <TextInput
             style={styles.input}
+            selectionColor="#fff"
+            textColor="#fff"
+            underlineColor="#fff"
             type="flat"
             label="Password"
             secureTextEntry={true}

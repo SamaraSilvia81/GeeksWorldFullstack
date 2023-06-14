@@ -13,7 +13,7 @@ function HeroScreen({ navigation }) {
       />
       <TouchableOpacity onPress={() => navigation.navigate('Login')}>
         <Image
-          source={require('../../public/WorldGeekTransparent.png')}
+          source={require('../../public/GeeksWorldTransparent.png')}
           style={{ width: 300, height: 350 }}
         />
       </TouchableOpacity>

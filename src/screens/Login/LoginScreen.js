@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, StatusBar, StyleSheet, Keyboard, TouchableOpacity } from 'react-native';
 import { Button, TextInput, Text, Provider as PaperProvider, DefaultTheme } from 'react-native-paper';
+
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 
@@ -10,13 +11,21 @@ const LoginScreen = () => {
   
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  
   const auth = useSelector((state) => state.auth);
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [keyboardVisible, setKeyboardVisible] = useState(false);
+  
   const [errorMessage, setErrorMessage] = useState('');
 
+  const [keyboardVisible, setKeyboardVisible] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+  
   const handleLogin = () => {
     dispatch(login(username, password));
   };
@@ -32,6 +41,7 @@ const LoginScreen = () => {
   }, [auth.loggedIn, navigation]);
 
   useEffect(() => {
+
     const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', keyboardDidShow);
     const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', keyboardDidHide);
 
@@ -83,7 +93,7 @@ const LoginScreen = () => {
 
         <View style={styles.header}>
           <Text variant="displaySmall" style={styles.title}>
-            World's Geek
+            Geek's World
           </Text>
           <Text variant="titleSmall" style={styles.subtitle}>
             made for marvel & DC fans
@@ -93,6 +103,9 @@ const LoginScreen = () => {
         <View style={styles.formLogin}>
           <TextInput
             style={styles.input}
+            selectionColor="#fff"
+            textColor="#fff"
+            underlineColor="#fff"
             type="flat"
             label="Username"
             value={username}
@@ -100,6 +113,9 @@ const LoginScreen = () => {
           />
           <TextInput
             style={styles.input}
+            selectionColor="#fff"
+            textColor="#fff"
+            underlineColor="#fff"
             type="flat"
             label="Password"
             secureTextEntry={true}

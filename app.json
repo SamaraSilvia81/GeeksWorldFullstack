@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "worldsgeekfrontend",
-    "slug": "worldsgeekfrontend",
+    "name": "geeksworldfullstack",
+    "slug": "geeksworldfullstack",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./public/icon.png",
