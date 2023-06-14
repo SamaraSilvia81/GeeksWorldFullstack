@@ -1,6 +1,6 @@
 ![LogotipoWordsGeek](https://github.com/SamaraSilvia81/ProjectGeeksWorldFullstack/assets/100232025/23df698d-9dcf-4d5e-9cd6-01ec441e624e)
 
-# Geek's World - Project Fullstack React Native + NodeJS
+# Project Fullstack React Native + NodeJS
 ![Badge Concluído](http://img.shields.io/static/v1?label=STATUS&message=CONCLUÍDO&color=23232e&style=for-the-badge)
 
 ## Introdução
